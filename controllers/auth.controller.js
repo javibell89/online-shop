@@ -1,9 +1,9 @@
 function getSignup(req, res) {
-  res.render("auth/signup");
+  res.render('auth/signup');
 }
 
 function getLogin(req, res) {
-  res.render("auth/login");
+  res.render('auth/login');
 }
 
 module.exports = {
