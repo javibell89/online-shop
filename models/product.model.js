@@ -1,52 +1,69 @@
+// Importing the mongodb module
 const mongoDb = require('mongodb');
 
+// Importing the database connection
 const db = require('../data/database');
 
+// Defining the Product class
 class Product {
+  // Constructor for the Product class
   constructor(productData) {
+    // Initializing the product properties from the provided data
     this.title = productData.title;
     this.summary = productData.summary;
     this.price = +productData.price; // the + symbol force storing the value as a number
     this.description = productData.description;
     this.image = productData.image; // the name of the image file
-    this.imagePath = `product-data/images/${productData.image}`;
-    this.imageUrl = `/products/assets/images/${productData.image}`;
+    this.imagePath = `product-data/images/${productData.image}`; // path to the image file
+    this.imageUrl = `/products/assets/images/${productData.image}`; // URL to access the image
+    // If an id is provided, store it as a string
     if (productData._id) {
       this.id = productData._id.toString();
     }
   }
 
+  // Method to find a product by id
   static async findById(productId) {
     let prodId;
     try {
+      // Trying to create an ObjectId from the provided id
       prodId = new mongoDb.ObjectId(productId);
     } catch (error) {
+      // If an error occurs, set the error code to 404 and throw the error
       error.code = 404;
       throw error;
     }
 
+    // Trying to find the product in the database
     const product = await db
       .getDb()
       .collection('products')
       .findOne({ _id: prodId });
 
+    // If no product is found, throw an error
     if (!product) {
       const error = new Error('Product not found');
       error.code = 404;
       throw error;
     }
+    // Return the found product
     return product;
   }
 
+  // Method to find all products
   static async findAll() {
+    // Getting all products from the database
     const products = await db.getDb().collection('products').find().toArray();
 
+    // Returning the products as instances of the Product class
     return products.map(function (productDocument) {
       return new Product(productDocument);
     });
   }
 
+  // Method to save the product to the database
   async save() {
+    // Creating a product data object from the product properties
     const productData = {
       title: this.title,
       summary: this.summary,
@@ -54,8 +71,10 @@ class Product {
       description: this.description,
       image: this.image, // image name
     };
+    // Inserting the product data into the database
     await db.getDb().collection('products').insertOne(productData);
   }
 }
 
+// Exporting the Product class
 module.exports = Product;
