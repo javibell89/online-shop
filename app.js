@@ -11,47 +11,50 @@ const addCsrfTokenMiddleware = require('./middlewares/csrf-token');
 const errorHandleMiddleware = require('./middlewares/error-handler');
 const checkAuthStatusMiddleware = require('./middlewares/check-auth');
 const protectRoutesMiddleware = require('./middlewares/protect-routes');
+const cartMiddleware = require('./middlewares/cart');
 const authRoutes = require('./routes/auth.routes');
 const productsRoutes = require('./routes/products.routes');
 const baseRoutes = require('./routes/base.routes');
 const adminRoutes = require('./routes/admin.routes');
 
-// Initializing express app
+// Creating an express application
 const app = express();
 
-// Setting up the view engine
+// Setting up the view engine and views directory
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Setting up static files directory
+// Setting up static directories
 app.use(express.static('public'));
 app.use('/products/assets', express.static('product-data'));
 
-// Parsing incoming requests
+// Parsing URL-encoded bodies
 app.use(express.urlencoded({ extended: false }));
 
 // Creating session configuration
 const sessionConfig = createSessionConfig();
 
-// Applying middlewares
-app.use(expressSession(sessionConfig)); // session middleware
-app.use(csrf()); // CSRF protection middleware
-app.use(addCsrfTokenMiddleware); // middleware to add CSRF token to views
-app.use(checkAuthStatusMiddleware); // middleware to check authentication status
-// Setting up routes
-app.use(baseRoutes); // base routes
-app.use(authRoutes); // authentication routes
-app.use(productsRoutes); // product routes
-app.use(protectRoutesMiddleware);
-app.use('/admin/', adminRoutes); // admin routes
+// Setting up middlewares
+app.use(expressSession(sessionConfig));
+app.use(csrf());
+app.use(cartMiddleware);
+app.use(addCsrfTokenMiddleware);
+app.use(checkAuthStatusMiddleware);
 
-// Error handling middleware
+// Setting up routes
+app.use(baseRoutes);
+app.use(authRoutes);
+app.use(productsRoutes);
+app.use(protectRoutesMiddleware);
+app.use('/admin/', adminRoutes);
+
+// Setting up error handling middleware
 app.use(errorHandleMiddleware);
 
 // Connecting to the database and starting the server
 db.connectToDatabase()
   .then(function () {
-    app.listen(3000); // start the server on port 3000
+    app.listen(3000);
   })
   .catch(function (error) {
     console.log('Error connecting to database');
