@@ -106,6 +106,11 @@ class Product {
     // Updating the image data of the product
     this.updateImageData();
   }
+
+  remove() {
+    const productId = new mongoDb.ObjectId(this.id);
+    return db.getDb().collection('products').deleteOne({ _id: productId });
+  }
 }
 
 // Exporting the Product class
