@@ -81,6 +81,24 @@ async function updateProduct(req, res, next) {
   res.redirect('/admin/products');
 }
 
+async function deleteProduct(req, res, next) {
+  let product; // Declare a variable named 'product'
+  try {
+    // Try to find the product by its ID from the request parameters
+    product = await Product.findById(req.params.id);
+    // If the product is found, remove it from the database
+    await product.remove();
+  } catch (error) {
+    // If an error occurs, pass it to the next middleware function
+    next(error);
+    // Stop execution of this function
+    return;
+  }
+
+  // If the product was successfully removed, send a JSON response to the client
+  res.json({ message: 'Deleted product' });
+}
+
 // Exporting the controller functions
 module.exports = {
   getProducts: getProducts,
@@ -88,4 +106,5 @@ module.exports = {
   createNewProduct: createNewProduct,
   getUpdateProduct: getUpdateProduct,
   updateProduct: updateProduct,
+  deleteProduct: deleteProduct,
 };
