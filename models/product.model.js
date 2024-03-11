@@ -16,6 +16,7 @@ class Product {
     this.image = productData.image; // the name of the image file
     this.imagePath = `product-data/images/${productData.image}`; // path to the image file
     this.imageUrl = `/products/assets/images/${productData.image}`; // URL to access the image
+    this.updateImageData();
     // If an id is provided, store it as a string
     if (productData._id) {
       this.id = productData._id.toString();
@@ -47,7 +48,7 @@ class Product {
       throw error;
     }
     // Return the found product
-    return product;
+    return new Product(product);
   }
 
   // Method to find all products
@@ -61,6 +62,12 @@ class Product {
     });
   }
 
+  // Method to update the image data for a product
+  updateImageData() {
+    this.imagePath = `product-data/images/${this.image}`;
+    this.imageUrl = `/products/assets/images/${this.image}`;
+  }
+
   // Method to save the product to the database
   async save() {
     // Creating a product data object from the product properties
@@ -71,8 +78,33 @@ class Product {
       description: this.description,
       image: this.image, // image name
     };
-    // Inserting the product data into the database
-    await db.getDb().collection('products').insertOne(productData);
+
+    if (this.id) {
+      // If an id is provided, update the product in the database
+      const productId = new mongoDb.ObjectId(this.id);
+      if (!this.image) {
+        // If no image is provided, remove the image property from the product data
+        delete productData.image;
+      }
+
+      // Updating the product in the database
+      await db
+        .getDb()
+        .collection('products')
+        .updateOne({ _id: productId }, { $set: productData });
+    } else {
+      // If no id is provided, insert the product data into the database as a new product
+      await db.getDb().collection('products').insertOne(productData);
+    }
+  }
+
+  // Method to replace the image of the product
+  replaceImage(newImage) {
+    // Updating the image property of the product
+    this.image = newImage;
+
+    // Updating the image data of the product
+    this.updateImageData();
   }
 }
 

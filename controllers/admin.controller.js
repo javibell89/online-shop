@@ -55,8 +55,31 @@ async function getUpdateProduct(req, res, next) {
   }
 }
 
-// Function to update a product
-function updateProduct() {}
+// Function to handle updating a product
+async function updateProduct(req, res, next) {
+  // Creating a new Product instance with the data from the request body and the id from the request parameters
+  const product = new Product({
+    ...req.body,
+    _id: req.params.id,
+  });
+
+  // If a file is included in the request (the updated image), replace the product's image with the new one
+  if (req.file) {
+    product.replaceImage(req.file.filename);
+  }
+
+  // Try to save the updated product
+  try {
+    await product.save();
+  } catch (error) {
+    // If an error occurs, pass it to the next middleware in the chain
+    next(error);
+    return;
+  }
+
+  // If the product is successfully updated, redirect the user to the admin products page
+  res.redirect('/admin/products');
+}
 
 // Exporting the controller functions
 module.exports = {
