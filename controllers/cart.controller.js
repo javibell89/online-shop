@@ -1,6 +1,10 @@
 // Import the Product model
 const Product = require('../models/product.model');
 
+function getCart(req, res) {
+  res.render('customer/cart/cart');
+}
+
 // Define an asynchronous function to add an item to the cart
 async function addCartItem(req, res, next) {
   let product;
@@ -32,5 +36,6 @@ async function addCartItem(req, res, next) {
 
 // Export the addCartItem function
 module.exports = {
-  addCartItem,
+  addCartItem: addCartItem,
+  getCart: getCart,
 };
