@@ -1,6 +1,8 @@
 // Importing the bcryptjs module for password hashing
 const bcrypt = require('bcryptjs');
 
+const mongodb = require('mongodb');
+
 // Importing the database connection
 const db = require('../data/database');
 
@@ -17,6 +19,15 @@ class User {
       postal: postal,
       city: city,
     };
+  }
+
+  static async findById(userId) {
+    const uid = new mongodb.ObjectId(userId);
+
+    return db
+      .getDb()
+      .collection('users')
+      .findOne({ _id: uid }, { projection: { password: 0 } });
   }
 
   // Method to find a user with the same email
