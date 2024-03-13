@@ -1,105 +1,105 @@
-// Importing the Product model
 const Product = require('../models/product.model');
+const Order = require('../models/order.model');
 
-// Function to get all products
 async function getProducts(req, res, next) {
   try {
-    // Fetching all products from the database
     const products = await Product.findAll();
-    // Rendering the 'all-products' view with the fetched products
     res.render('admin/products/all-products', { products: products });
   } catch (error) {
-    // Passing the error to the next middleware in the stack
     next(error);
     return;
   }
 }
 
-// Function to render the 'new-product' view
 function getNewProduct(req, res) {
   res.render('admin/products/new-product');
 }
 
-// Function to create a new product
 async function createNewProduct(req, res, next) {
-  // Creating a new product with the data from the request body and the uploaded image filename
   const product = new Product({
     ...req.body,
     image: req.file.filename,
   });
 
   try {
-    // Saving the new product to the database
     await product.save();
   } catch (error) {
-    // Passing the error to the next middleware in the stack
     next(error);
     return;
   }
 
-  // Redirecting to the 'all-products' view
   res.redirect('/admin/products');
 }
 
-// Function to get a product for updating
 async function getUpdateProduct(req, res, next) {
   try {
-    // Fetching the product with the provided ID from the database
     const product = await Product.findById(req.params.id);
-    // Rendering the 'update-product' view with the fetched product
     res.render('admin/products/update-product', { product: product });
   } catch (error) {
-    // Passing the error to the next middleware in the stack
     next(error);
-    return;
   }
 }
 
-// Function to handle updating a product
 async function updateProduct(req, res, next) {
-  // Creating a new Product instance with the data from the request body and the id from the request parameters
   const product = new Product({
     ...req.body,
     _id: req.params.id,
   });
 
-  // If a file is included in the request (the updated image), replace the product's image with the new one
   if (req.file) {
     product.replaceImage(req.file.filename);
   }
 
-  // Try to save the updated product
   try {
     await product.save();
   } catch (error) {
-    // If an error occurs, pass it to the next middleware in the chain
     next(error);
     return;
   }
 
-  // If the product is successfully updated, redirect the user to the admin products page
   res.redirect('/admin/products');
 }
 
 async function deleteProduct(req, res, next) {
-  let product; // Declare a variable named 'product'
+  let product;
   try {
-    // Try to find the product by its ID from the request parameters
     product = await Product.findById(req.params.id);
-    // If the product is found, remove it from the database
     await product.remove();
   } catch (error) {
-    // If an error occurs, pass it to the next middleware function
-    next(error);
-    // Stop execution of this function
-    return;
+    return next(error);
   }
 
-  // If the product was successfully removed, send a JSON response to the client
-  res.json({ message: 'Deleted product' });
+  res.json({ message: 'Deleted product!' });
 }
 
-// Exporting the controller functions
+async function getOrders(req, res, next) {
+  try {
+    const orders = await Order.findAll();
+    res.render('admin/orders/admin-orders', {
+      orders: orders
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function updateOrder(req, res, next) {
+  const orderId = req.params.id;
+  const newStatus = req.body.newStatus;
+
+  try {
+    const order = await Order.findById(orderId);
+
+    order.status = newStatus;
+
+    await order.save();
+
+    res.json({ message: 'Order updated', newStatus: newStatus });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   getProducts: getProducts,
   getNewProduct: getNewProduct,
@@ -107,4 +107,6 @@ module.exports = {
   getUpdateProduct: getUpdateProduct,
   updateProduct: updateProduct,
   deleteProduct: deleteProduct,
+  getOrders: getOrders,
+  updateOrder: updateOrder
 };
