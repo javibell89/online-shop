@@ -4,7 +4,7 @@ const addToCartButtonElement = document.querySelector(
 );
 
 // Get the badge element that displays the total quantity of items in the cart
-const badgeElement = document.querySelector('.nav-items .badge');
+const cartBadgeElements = document.querySelectorAll('.nav-items .badge');
 
 // Define an asynchronous function to handle adding an item to the cart
 async function addToCart() {
@@ -39,7 +39,9 @@ async function addToCart() {
   const newTotalQuantity = responseData.newTotalItems;
 
   // Update the text of the badge to reflect the new total quantity
-  badgeElement.textContent = newTotalQuantity;
+  for (const cartBadgeElement of cartBadgeElements) {
+    cartBadgeElement.textContent = newTotalQuantity;
+  }
 }
 
 // Add a click event listener to the 'Add to Cart' button that triggers the addToCart function
