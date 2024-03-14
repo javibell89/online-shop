@@ -1,41 +1,47 @@
-// Import the Order and User models
+// Import required modules
 const Order = require('../models/order.model');
 const User = require('../models/user.model');
+const stripe = require('stripe')(
+  'sk_test_51OuCmhCOeCfqYsiP2zoIAnN9ziOixAw9nwMC4oaFBuEzqvqAI1A1RNR30fepdpcZNZGwXNYQzRW6TX10nsTNiHJq00VEAiMr2E'
+);
 
-// Define an asynchronous function to get all orders for a user
+// Function to get all orders for a user
 async function getOrders(req, res, next) {
   try {
-    // Fetch all orders for the user with the given ID from the database
+    // Find all orders for the user
     const orders = await Order.findAllForUser(res.locals.uid);
-    // Render the 'customer/orders/all-orders' view, passing the orders to it
+    // Render the orders page
     res.render('customer/orders/all-orders', {
       orders: orders,
     });
   } catch (error) {
-    // If an error occurs, pass it to the next middleware function
+    // Pass any errors to the next middleware
     next(error);
   }
 }
 
-// Define an asynchronous function to add an order
+// Function to add an order
 async function addOrder(req, res, next) {
+  // Get the cart from the request
+  const cart = res.locals.cart;
+
   let userDocument;
   try {
-    // Fetch the user with the given ID from the database
+    // Find the user document
     userDocument = await User.findById(res.locals.uid);
   } catch (error) {
-    // If an error occurs, pass it to the next middleware function
+    // Pass any errors to the next middleware
     return next(error);
   }
 
-  // Create a new Order instance with the cart and the user document
+  // Create a new order with the cart and user document
   const order = new Order(cart, userDocument);
 
   try {
-    // Save the new order to the database
+    // Save the order
     await order.save();
   } catch (error) {
-    // If an error occurs, pass it to the next middleware function
+    // Pass any errors to the next middleware
     next(error);
     return;
   }
@@ -43,12 +49,45 @@ async function addOrder(req, res, next) {
   // Clear the cart in the session
   req.session.cart = null;
 
-  // Redirect to the '/orders' route
-  res.redirect('/orders');
+  // Create a new Stripe checkout session
+  const session = await stripe.checkout.sessions.create({
+    line_items: cart.items.map(function (item) {
+      return {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: item.product.title,
+          },
+          unit_amount: +item.product.price.toFixed(2) * 100,
+        },
+        quantity: item.quantity,
+      };
+    }),
+    mode: 'payment',
+    success_url: `http://localhost:3000/orders/success`,
+    cancel_url: `http://localhost:3000/orders/failure`,
+  });
+
+  // Redirect to the Stripe checkout session
+  res.redirect(303, session.url);
 }
 
-// Export the controller functions
+// Function to handle successful orders
+function getSuccess(req, res) {
+  // Render the success page
+  res.render('customer/orders/success');
+}
+
+// Function to handle failed orders
+function getFailure(req, res) {
+  // Render the failure page
+  res.render('customer/orders/failure');
+}
+
+// Export the functions
 module.exports = {
   addOrder: addOrder,
   getOrders: getOrders,
+  getSuccess: getSuccess,
+  getFailure: getFailure,
 };
