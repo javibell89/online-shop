@@ -20,7 +20,7 @@ async function addCartItem(req, res, next) {
   }
 
   // Get the cart from the response's local variables
-  const cart = res.locals.cart;
+  const { cart } = res.locals;
 
   // Add the product to the cart
   cart.addItem(product);
@@ -37,12 +37,12 @@ async function addCartItem(req, res, next) {
 // Define a function to update an item in the cart
 function updateCartItem(req, res) {
   // Get the cart from the response's local variables
-  const cart = res.locals.cart;
+  const { cart } = res.locals;
 
   // Update the quantity of the product in the cart
   const updatedItemData = cart.updateItem(
     req.body.productId,
-    +req.body.quantity
+    +req.body.quantity,
   );
 
   // Update the cart in the session
@@ -61,7 +61,7 @@ function updateCartItem(req, res) {
 
 // Export the controller functions
 module.exports = {
-  addCartItem: addCartItem,
-  getCart: getCart,
-  updateCartItem: updateCartItem,
+  addCartItem,
+  getCart,
+  updateCartItem,
 };

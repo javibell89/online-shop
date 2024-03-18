@@ -2,7 +2,7 @@
 const Order = require('../models/order.model');
 const User = require('../models/user.model');
 const stripe = require('stripe')(
-  'sk_test_51OuCmhCOeCfqYsiP2zoIAnN9ziOixAw9nwMC4oaFBuEzqvqAI1A1RNR30fepdpcZNZGwXNYQzRW6TX10nsTNiHJq00VEAiMr2E'
+  'sk_test_51OuCmhCOeCfqYsiP2zoIAnN9ziOixAw9nwMC4oaFBuEzqvqAI1A1RNR30fepdpcZNZGwXNYQzRW6TX10nsTNiHJq00VEAiMr2E',
 );
 
 // Function to get all orders for a user
@@ -12,7 +12,7 @@ async function getOrders(req, res, next) {
     const orders = await Order.findAllForUser(res.locals.uid);
     // Render the orders page
     res.render('customer/orders/all-orders', {
-      orders: orders,
+      orders,
     });
   } catch (error) {
     // Pass any errors to the next middleware
@@ -23,7 +23,7 @@ async function getOrders(req, res, next) {
 // Function to add an order
 async function addOrder(req, res, next) {
   // Get the cart from the request
-  const cart = res.locals.cart;
+  const { cart } = res.locals;
 
   let userDocument;
   try {
@@ -86,8 +86,8 @@ function getFailure(req, res) {
 
 // Export the functions
 module.exports = {
-  addOrder: addOrder,
-  getOrders: getOrders,
-  getSuccess: getSuccess,
-  getFailure: getFailure,
+  addOrder,
+  getOrders,
+  getSuccess,
+  getFailure,
 };

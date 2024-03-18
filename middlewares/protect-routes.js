@@ -11,7 +11,7 @@ function protectRoutes(req, res, next) {
   }
 
   // If the user is authenticated and (if necessary) an admin, call the next middleware function
-  next();
+  return next();
 }
 
 // Export the protectRoutes function

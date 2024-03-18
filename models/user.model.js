@@ -15,9 +15,9 @@ class User {
     this.password = password;
     this.name = fullname;
     this.address = {
-      street: street,
-      postal: postal,
-      city: city,
+      street,
+      postal,
+      city,
     };
   }
 
@@ -36,12 +36,8 @@ class User {
   }
 
   // Method to check if a user with the same email already exists
-  async existsAlready() {
-    const existingUser = await this.getUserWithSameEmail();
-    if (existingUser) {
-      return true;
-    }
-    return false;
+  existsAlready() {
+    return this.getUserWithSameEmail();
   }
 
   // Method to sign up a new user

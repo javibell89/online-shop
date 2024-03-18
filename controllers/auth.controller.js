@@ -50,7 +50,7 @@ async function signup(req, res, next) {
       req.body.fullname,
       req.body.street,
       req.body.postal,
-      req.body.city
+      req.body.city,
     ) ||
     !validation.emailIsConfirm(req.body.email, req.body['confirm-email'])
   ) {
@@ -64,7 +64,7 @@ async function signup(req, res, next) {
       },
       function () {
         res.redirect('/signup');
-      }
+      },
     );
     return;
   }
@@ -76,7 +76,7 @@ async function signup(req, res, next) {
     req.body.fullname,
     req.body.street,
     req.body.postal,
-    req.body.city
+    req.body.city,
   );
 
   try {
@@ -94,7 +94,7 @@ async function signup(req, res, next) {
         },
         function () {
           res.redirect('/signup');
-        }
+        },
       );
 
       return;
@@ -108,7 +108,7 @@ async function signup(req, res, next) {
   }
 
   // Redirecting to the login page
-  res.redirect('/login');
+  return res.redirect('/login');
 }
 
 // Function to render the login page
@@ -161,7 +161,7 @@ async function login(req, res) {
 
   // Checking if the entered password is correct
   const passwordIsCorrect = await user.hasMatchingPassword(
-    existingUser.password
+    existingUser.password,
   );
 
   // If the password is not correct
@@ -189,9 +189,9 @@ function logout(req, res) {
 
 // Exporting the controller functions
 module.exports = {
-  getSignup: getSignup,
-  getLogin: getLogin,
-  signup: signup,
-  login: login,
-  logout: logout,
+  getSignup,
+  getLogin,
+  signup,
+  login,
+  logout,
 };

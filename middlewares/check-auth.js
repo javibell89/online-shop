@@ -1,7 +1,7 @@
 // Middleware function to check the authentication status of the user
 function checkAuthStatus(req, res, next) {
   // Extracting the user ID from the session
-  const uid = req.session.uid;
+  const { uid } = req.session;
 
   // If the user ID does not exist, the user is not authenticated
   // So, we call the next middleware in the stack and return
@@ -18,7 +18,7 @@ function checkAuthStatus(req, res, next) {
   res.locals.isAdmin = req.session.isAdmin;
 
   // Calling the next middleware in the stack
-  next();
+  return next();
 }
 
 // Exporting the checkAuthStatus function

@@ -8,11 +8,10 @@ async function getProducts(req, res, next) {
     // Fetch all products from the database
     const products = await Product.findAll();
     // Render the 'all-products' view, passing the products to it
-    res.render('admin/products/all-products', { products: products });
+    res.render('admin/products/all-products', { products });
   } catch (error) {
     // If an error occurs, pass it to the next middleware function
     next(error);
-    return;
   }
 }
 
@@ -48,7 +47,7 @@ async function getUpdateProduct(req, res, next) {
     // Fetch the product with the given ID from the database
     const product = await Product.findById(req.params.id);
     // Render the 'update-product' view, passing the product to it
-    res.render('admin/products/update-product', { product: product });
+    res.render('admin/products/update-product', { product });
   } catch (error) {
     // If an error occurs, pass it to the next middleware function
     next(error);
@@ -95,7 +94,7 @@ async function deleteProduct(req, res, next) {
   }
 
   // Send a JSON response indicating that the product was deleted
-  res.json({ message: 'Deleted product!' });
+  return res.json({ message: 'Deleted product!' });
 }
 
 // Define an asynchronous function to get all orders
@@ -105,7 +104,7 @@ async function getOrders(req, res, next) {
     const orders = await Order.findAll();
     // Render the 'admin-orders' view, passing the orders to it
     res.render('admin/orders/admin-orders', {
-      orders: orders,
+      orders,
     });
   } catch (error) {
     // If an error occurs, pass it to the next middleware function
@@ -117,7 +116,7 @@ async function getOrders(req, res, next) {
 async function updateOrder(req, res, next) {
   // Get the order's ID and the new status from the request
   const orderId = req.params.id;
-  const newStatus = req.body.newStatus;
+  const { newStatus } = req.body;
 
   try {
     // Fetch the order with the given ID from the database
@@ -130,7 +129,7 @@ async function updateOrder(req, res, next) {
     await order.save();
 
     // Send a JSON response indicating that the order was updated
-    res.json({ message: 'Order updated', newStatus: newStatus });
+    res.json({ message: 'Order updated', newStatus });
   } catch (error) {
     // If an error occurs, pass it to the next middleware function
     next(error);
@@ -139,12 +138,12 @@ async function updateOrder(req, res, next) {
 
 // Export the controller functions
 module.exports = {
-  getProducts: getProducts,
-  getNewProduct: getNewProduct,
-  createNewProduct: createNewProduct,
-  getUpdateProduct: getUpdateProduct,
-  updateProduct: updateProduct,
-  deleteProduct: deleteProduct,
-  getOrders: getOrders,
-  updateOrder: updateOrder,
+  getProducts,
+  getNewProduct,
+  createNewProduct,
+  getUpdateProduct,
+  updateProduct,
+  deleteProduct,
+  getOrders,
+  updateOrder,
 };

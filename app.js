@@ -1,5 +1,5 @@
 // Import necessary modules
-const path = require('path');
+const path = require('node:path');
 const express = require('express');
 const csrf = require('csurf');
 const expressSession = require('express-session');
@@ -67,7 +67,9 @@ app.use(errorHandlerMiddleware);
 db.connectToDatabase()
   .then(function () {
     app.listen(3000);
+    return null;
   })
+  // eslint-disable-next-line unicorn/prefer-top-level-await
   .catch(function (error) {
     console.log('Failed to connect to the database!');
     console.log(error);

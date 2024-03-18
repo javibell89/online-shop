@@ -32,6 +32,6 @@ function emailIsConfirm(email, confirmEmail) {
 
 // Exporting the userDetailsAreValid and emailIsConfirm functions
 module.exports = {
-  userDetailsAreValid: userDetailsAreValid,
-  emailIsConfirm: emailIsConfirm,
+  userDetailsAreValid,
+  emailIsConfirm,
 };

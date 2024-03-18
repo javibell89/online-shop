@@ -18,6 +18,6 @@ function flashDataToSession(req, data, action) {
 
 // Exporting the getSessionData and flashDataToSession functions
 module.exports = {
-  getSessionData: getSessionData,
-  flashDataToSession: flashDataToSession,
+  getSessionData,
+  flashDataToSession,
 };

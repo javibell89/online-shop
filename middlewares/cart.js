@@ -14,7 +14,7 @@ function initializeCart(req, res, next) {
     cart = new Cart(
       sessionCart.items,
       sessionCart.totalQuantity,
-      sessionCart.totalPrice
+      sessionCart.totalPrice,
     );
   }
 

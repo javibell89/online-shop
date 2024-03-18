@@ -16,6 +16,6 @@ function destroyUserAuthSession(req) {
 
 // Exporting the createUserSession and destroyUserAuthSession functions
 module.exports = {
-  createUserSession: createUserSession,
-  destroyUserAuthSession: destroyUserAuthSession,
+  createUserSession,
+  destroyUserAuthSession,
 };

@@ -1,6 +1,6 @@
 // Get the 'Add to Cart' button element
 const addToCartButtonElement = document.querySelector(
-  '#product-details button'
+  '#product-details button',
 );
 
 // Get the badge element that displays the total quantity of items in the cart
@@ -17,7 +17,7 @@ async function addToCart() {
     // Send a POST request to the server to add the item to the cart
     response = await fetch('/cart/items', {
       method: 'POST',
-      body: JSON.stringify({ productId: productId, _csrf: csrfToken }),
+      body: JSON.stringify({ productId, _csrf: csrfToken }),
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {

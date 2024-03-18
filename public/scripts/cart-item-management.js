@@ -1,9 +1,9 @@
 // Select all elements with the class 'cart-item-management'
 const cartItemUpdateFormElements = document.querySelectorAll(
-  '.cart-item-management'
+  '.cart-item-management',
 );
 // Select the element with the ID 'cart-total-price'
-const cartTotalPriceElement = document.getElementById('cart-total-price');
+const cartTotalPriceElement = document.querySelector('#cart-total-price');
 // Select all elements with the class 'nav-items .badge'
 const cartBadgeElements = document.querySelectorAll('.nav-items .badge');
 
@@ -26,8 +26,8 @@ async function updateCartItem(event) {
     response = await fetch('/cart/items', {
       method: 'PATCH',
       body: JSON.stringify({
-        productId: productId,
-        quantity: quantity,
+        productId,
+        quantity,
         _csrf: csrfToken,
       }),
       headers: {

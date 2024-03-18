@@ -2,7 +2,7 @@
 const mongodb = require('mongodb');
 
 // Getting the MongoClient from the mongodb module
-const MongoClient = mongodb.MongoClient;
+const { MongoClient } = mongodb;
 
 // Variable to hold the database connection
 let database;
@@ -28,7 +28,7 @@ function getDb() {
 // Exporting the functions
 module.exports = {
   // Function to connect to the database
-  connectToDatabase: connectToDatabase,
+  connectToDatabase,
   // Function to get the database connection
-  getDb: getDb,
+  getDb,
 };

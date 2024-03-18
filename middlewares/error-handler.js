@@ -8,7 +8,7 @@ function handleErrors(error, req, res, next) {
     return res.status(404).render('shared/404');
   }
   // Sending a 500 status code and rendering the '500' view
-  res.status(500).render('shared/500');
+  return res.status(500).render('shared/500');
 }
 
 // Exporting the handleErrors function

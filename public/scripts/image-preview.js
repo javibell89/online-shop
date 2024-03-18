@@ -1,6 +1,6 @@
 // Get the file input element from the DOM
 const imagePickerElement = document.querySelector(
-  '#image-upload-control input'
+  '#image-upload-control input',
 );
 
 // Get the image element where the preview will be displayed
@@ -9,7 +9,7 @@ const imagePreviewElement = document.querySelector('#image-upload-control img');
 // Function to update the image preview
 function updateImagePreview() {
   // Get the list of files selected in the file input
-  const files = imagePickerElement.files;
+  const { files } = imagePickerElement;
 
   // If no files were selected, hide the preview image and exit the function
   if (!files || files.length === 0) {

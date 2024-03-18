@@ -1,6 +1,6 @@
 // Select all form elements within elements with the class 'order-actions'
 const updateOrderFormElements = document.querySelectorAll(
-  '.order-actions form'
+  '.order-actions form',
 );
 
 // Define an asynchronous function to update an order
@@ -25,7 +25,7 @@ async function updateOrder(event) {
     response = await fetch(`/admin/orders/${orderId}`, {
       method: 'PATCH',
       body: JSON.stringify({
-        newStatus: newStatus,
+        newStatus,
         _csrf: csrfToken,
       }),
       headers: {

@@ -26,7 +26,7 @@ class Order {
       orderDoc.userData,
       orderDoc.status,
       orderDoc.date,
-      orderDoc._id
+      orderDoc._id,
     );
   }
 
@@ -74,16 +74,15 @@ class Order {
         .getDb()
         .collection('orders')
         .updateOne({ _id: orderId }, { $set: { status: this.status } });
-    } else {
-      const orderDocument = {
-        userData: this.userData,
-        productData: this.productData,
-        date: new Date(),
-        status: this.status,
-      };
-
-      return db.getDb().collection('orders').insertOne(orderDocument);
     }
+    const orderDocument = {
+      userData: this.userData,
+      productData: this.productData,
+      date: new Date(),
+      status: this.status,
+    };
+
+    return db.getDb().collection('orders').insertOne(orderDocument);
   }
 }
 

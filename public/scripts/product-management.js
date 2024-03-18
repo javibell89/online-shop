@@ -1,6 +1,6 @@
 // Select all button elements within elements with the class 'product-item'
 const deleteProductButtonElements = document.querySelectorAll(
-  '.product-item button'
+  '.product-item button',
 );
 
 // Define an asynchronous function to delete a product
@@ -13,10 +13,10 @@ async function deleteProduct(event) {
 
   // Send a DELETE request to the '/admin/products/{productId}' route
   const response = await fetch(
-    '/admin/products/' + productId + '?_csrf=' + csrfToken,
+    `/admin/products/${productId}?_csrf=${csrfToken}`,
     {
       method: 'DELETE',
-    }
+    },
   );
 
   // If the response is not OK, show an alert
