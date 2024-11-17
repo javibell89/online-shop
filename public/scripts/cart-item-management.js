@@ -54,19 +54,15 @@ async function updateCartItem(event) {
     form.parentElement.parentElement.remove();
   } else {
     // Otherwise, update the item's total price
-    const cartItemTotalPriceElement =
-      form.parentElement.querySelector('.cart-item-price');
-    cartItemTotalPriceElement.textContent =
-      responseData.updatedCartData.updatedItemPrice.toFixed(2);
+    const cartItemTotalPriceElement = form.parentElement.querySelector('.cart-item-price');
+    cartItemTotalPriceElement.textContent = responseData.updatedCartData.updatedItemPrice.toFixed(2);
   }
 
   // Update the total price of the cart
-  cartTotalPriceElement.textContent =
-    responseData.updatedCartData.newTotalPrice.toFixed(2);
+  cartTotalPriceElement.textContent = responseData.updatedCartData.newTotalPrice.toFixed(2);
   // Update the quantity of items in the cart
   for (const cartBadgeElement of cartBadgeElements) {
-    cartBadgeElement.textContent =
-      responseData.updatedCartData.newTotalQuantity;
+    cartBadgeElement.textContent = responseData.updatedCartData.newTotalQuantity;
   }
 }
 

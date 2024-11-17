@@ -16,11 +16,11 @@ function userCredentialsAreValid(email, password) {
 function userDetailsAreValid(email, password, name, street, postal, city) {
   // Returns true if the user credentials are valid and the name, street, postal, and city are not empty
   return (
-    userCredentialsAreValid(email, password) &&
-    !isEmpty(name) &&
-    !isEmpty(street) &&
-    !isEmpty(postal) &&
-    !isEmpty(city)
+    userCredentialsAreValid(email, password)
+    && !isEmpty(name)
+    && !isEmpty(street)
+    && !isEmpty(postal)
+    && !isEmpty(city)
   );
 }
 

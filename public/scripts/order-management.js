@@ -48,8 +48,7 @@ async function updateOrder(event) {
   const responseData = await response.json();
 
   // Update the status of the order in the UI
-  form.parentElement.parentElement.querySelector('.badge').textContent =
-    responseData.newStatus.toUpperCase();
+  form.parentElement.parentElement.querySelector('.badge').textContent = responseData.newStatus.toUpperCase();
 }
 
 // Add a 'submit' event listener to each form element

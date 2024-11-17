@@ -51,8 +51,8 @@ async function signup(req, res, next) {
       req.body.street,
       req.body.postal,
       req.body.city,
-    ) ||
-    !validation.emailIsConfirm(req.body.email, req.body['confirm-email'])
+    )
+    || !validation.emailIsConfirm(req.body.email, req.body['confirm-email'])
   ) {
     // Flash an error message to the session and redirect to the signup page
     sessionFlash.flashDataToSession(
@@ -62,7 +62,7 @@ async function signup(req, res, next) {
           'Please check your input. Password must be at least 6 characters long. Postal code must be 5 characters long',
         ...enteredData,
       },
-      function () {
+      () => {
         res.redirect('/signup');
       },
     );
@@ -92,7 +92,7 @@ async function signup(req, res, next) {
           errorMessage: 'User exists already! Try logging in instead!',
           ...enteredData,
         },
-        function () {
+        () => {
           res.redirect('/signup');
         },
       );
@@ -129,7 +129,7 @@ function getLogin(req, res) {
 }
 
 // Function to handle login
-async function login(req, res) {
+async function login(req, res, next) {
   // Creating a new user instance with the entered email and password
   const user = new User(req.body.email, req.body.password);
   let existingUser;
@@ -152,7 +152,7 @@ async function login(req, res) {
   // If the user does not exist
   if (!existingUser) {
     // Flash the error data to the session and redirect to the login page
-    sessionFlash.flashDataToSession(req, sessionErrorData, function () {
+    sessionFlash.flashDataToSession(req, sessionErrorData, () => {
       res.redirect('/login');
     });
 
@@ -167,14 +167,14 @@ async function login(req, res) {
   // If the password is not correct
   if (!passwordIsCorrect) {
     // Flash the error data to the session and redirect to the login page
-    sessionFlash.flashDataToSession(req, sessionErrorData, function () {
+    sessionFlash.flashDataToSession(req, sessionErrorData, () => {
       res.redirect('/login');
     });
     return;
   }
 
   // Creating a user session and redirecting to the home page
-  authUtil.createUserSession(req, existingUser, function () {
+  authUtil.createUserSession(req, existingUser, () => {
     res.redirect('/');
   });
 }

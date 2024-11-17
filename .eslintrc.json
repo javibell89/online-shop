@@ -1,15 +1,41 @@
 {
   "env": {
     "browser": true,
-    "commonjs": true,
     "es2021": true,
     "node": true
   },
-  "extends": ["auto", "plugin:prettier/recommended"],
+  "extends": ["eslint:recommended", "airbnb-base"],
   "parserOptions": {
-    "ecmaVersion": "latest"
+    "ecmaVersion": "latest",
+    "sourceType": "module"
   },
+  "plugins": ["unicorn"],
   "rules": {
-    "unicorn/prefer-module": "off"
+    "func-names": "off",
+    "no-console": "off",
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
+    "consistent-return": "off",
+    "no-alert": "off",
+    "no-restricted-syntax": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-param-reassign": ["error", { "props": false }],
+    "max-len": ["error", { "code": 120 }],
+    "no-continue": "off",
+    "unicorn/prefer-top-level-await": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "newlines-between": "always"
+      }
+    ]
   }
 }

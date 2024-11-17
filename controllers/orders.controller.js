@@ -1,9 +1,11 @@
 // Import required modules
+require('dotenv').config();
+const stripe = require('stripe');
+
 const Order = require('../models/order.model');
 const User = require('../models/user.model');
-const stripe = require('stripe')(
-  'sk_test_51OuCmhCOeCfqYsiP2zoIAnN9ziOixAw9nwMC4oaFBuEzqvqAI1A1RNR30fepdpcZNZGwXNYQzRW6TX10nsTNiHJq00VEAiMr2E',
-);
+
+const stripeClient = stripe(process.env.STRIPE_API_KEY);
 
 // Function to get all orders for a user
 async function getOrders(req, res, next) {
@@ -50,22 +52,20 @@ async function addOrder(req, res, next) {
   req.session.cart = null;
 
   // Create a new Stripe checkout session
-  const session = await stripe.checkout.sessions.create({
-    line_items: cart.items.map(function (item) {
-      return {
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: item.product.title,
-          },
-          unit_amount: +item.product.price.toFixed(2) * 100,
+  const session = await stripeClient.checkout.sessions.create({
+    line_items: cart.items.map((item) => ({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: item.product.title,
         },
-        quantity: item.quantity,
-      };
-    }),
+        unit_amount: +item.product.price.toFixed(2) * 100,
+      },
+      quantity: item.quantity,
+    })),
     mode: 'payment',
-    success_url: `http://localhost:3000/orders/success`,
-    cancel_url: `http://localhost:3000/orders/failure`,
+    success_url: 'http://localhost:3000/orders/success',
+    cancel_url: 'http://localhost:3000/orders/failure',
   });
 
   // Redirect to the Stripe checkout session

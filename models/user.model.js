@@ -1,6 +1,5 @@
 // Importing the bcryptjs module for password hashing
 const bcrypt = require('bcryptjs');
-
 const mongodb = require('mongodb');
 
 // Importing the database connection

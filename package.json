@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js",
-    "eslint": "eslint --color --ext .html,.js,.json,.jsx,.md,.ts,.tsx *.* src",
-    "eslint:fix": "npm run eslint -- --fix"
+    "eslint": "eslint \"**/*.{js,jsx,ts,tsx,html,md}\" --color",
+    "eslint:fix": "eslint \"**/*.{js,jsx,ts,tsx,html,md}\" --color --fix"
   },
   "keywords": [],
   "author": "Javier Bellido",
@@ -16,6 +16,7 @@
     "bun": "^1.0.33",
     "connect-mongodb-session": "^5.0.0",
     "csurf": "^1.11.0",
+    "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
     "express": "^4.19.1",
     "express-session": "^1.18.0",

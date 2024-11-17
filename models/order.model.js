@@ -4,7 +4,7 @@ const db = require('../data/database');
 
 class Order {
   // Status => pending, fulfilled, cancelled
-  constructor(cart, userData, status = 'pending', date, orderId) {
+  constructor(cart, userData, date, orderId, status = 'pending') {
     this.productData = cart;
     this.userData = userData;
     this.status = status;
@@ -24,9 +24,9 @@ class Order {
     return new Order(
       orderDoc.productData,
       orderDoc.userData,
-      orderDoc.status,
       orderDoc.date,
       orderDoc._id,
+      orderDoc.status,
     );
   }
 
