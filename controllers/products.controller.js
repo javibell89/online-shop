@@ -7,7 +7,7 @@ async function getAllProducts(req, res, next) {
     // Fetch all products from the database
     const products = await Product.findAll();
     // Render the 'customer/products/all-products' view, passing the products to it
-    res.render('customer/products/all-products', { products: products });
+    res.render('customer/products/all-products', { products });
   } catch (error) {
     // If an error occurs, pass it to the next middleware function
     next(error);
@@ -20,7 +20,7 @@ async function getProductDetails(req, res, next) {
     // Fetch the product with the given ID from the database
     const product = await Product.findById(req.params.id);
     // Render the 'customer/products/product-details' view, passing the product to it
-    res.render('customer/products/product-details', { product: product });
+    res.render('customer/products/product-details', { product });
   } catch (error) {
     // If an error occurs, pass it to the next middleware function
     next(error);
@@ -29,6 +29,6 @@ async function getProductDetails(req, res, next) {
 
 // Export the controller functions
 module.exports = {
-  getAllProducts: getAllProducts,
-  getProductDetails: getProductDetails,
+  getAllProducts,
+  getProductDetails,
 };

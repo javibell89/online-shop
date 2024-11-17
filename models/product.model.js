@@ -46,10 +46,10 @@ class Product {
   }
 
   static async findMultiple(ids) {
-    const productIds = ids.map(function(id) {
+    const productIds = ids.map(function (id) {
       return new mongodb.ObjectId(id);
-    })
-    
+    });
+
     const products = await db
       .getDb()
       .collection('products')
@@ -86,7 +86,7 @@ class Product {
         { _id: productId },
         {
           $set: productData,
-        }
+        },
       );
     } else {
       await db.getDb().collection('products').insertOne(productData);

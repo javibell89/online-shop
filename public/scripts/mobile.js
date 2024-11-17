@@ -1,7 +1,7 @@
 // Select the element with the ID 'mobile-menu-btn'
-const mobileMenuBtnElement = document.getElementById('mobile-menu-btn');
+const mobileMenuBtnElement = document.querySelector('#mobile-menu-btn');
 // Select the element with the ID 'mobile-menu'
-const mobileMenuElement = document.getElementById('mobile-menu');
+const mobileMenuElement = document.querySelector('#mobile-menu');
 
 // Define a function to toggle the mobile menu
 function toggleMobileMenu() {

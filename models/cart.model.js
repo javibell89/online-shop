@@ -36,7 +36,7 @@ class Cart {
 
     if (deletableCartItemProductIds.length > 0) {
       this.items = this.items.filter(function (item) {
-        return deletableCartItemProductIds.indexOf(item.product.id) < 0;
+        return !deletableCartItemProductIds.includes(item.product.id);
       });
     }
 
@@ -45,14 +45,14 @@ class Cart {
     this.totalPrice = 0;
 
     for (const item of this.items) {
-      this.totalQuantity = this.totalQuantity + item.quantity;
-      this.totalPrice = this.totalPrice + item.totalPrice;
+      this.totalQuantity += item.quantity;
+      this.totalPrice += item.totalPrice;
     }
   }
 
   addItem(product) {
     const cartItem = {
-      product: product,
+      product,
       quantity: 1,
       totalPrice: product.price,
     };
@@ -85,12 +85,13 @@ class Cart {
         cartItem.totalPrice = newQuantity * item.product.price;
         this.items[i] = cartItem;
 
-        this.totalQuantity = this.totalQuantity + quantityChange;
+        this.totalQuantity += quantityChange;
         this.totalPrice += quantityChange * item.product.price;
         return { updatedItemPrice: cartItem.totalPrice };
-      } else if (item.product.id === productId && newQuantity <= 0) {
+      }
+      if (item.product.id === productId && newQuantity <= 0) {
         this.items.splice(i, 1);
-        this.totalQuantity = this.totalQuantity - item.quantity;
+        this.totalQuantity -= item.quantity;
         this.totalPrice -= item.totalPrice;
         return { updatedItemPrice: 0 };
       }

@@ -8,14 +8,12 @@ function createSessionStore(session) {
   const MongoDBStore = mongoDbStore(expressSession);
 
   // Creating a new MongoDBStore with the specified configuration
-  const store = new MongoDBStore({
+  // Returning the created store
+  return new MongoDBStore({
     uri: 'mongodb://localhost:27017/', // MongoDB connection string
     databaseName: 'online-shop', // Database name
     collection: 'sessions', // Collection name
   });
-
-  // Returning the created store
-  return store;
 }
 
 // Function to create a session configuration

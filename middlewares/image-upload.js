@@ -10,9 +10,9 @@ const upload = multer({
     // Setting the destination of the uploaded files
     destination: 'product-data/images',
     // Setting the filename of the uploaded files
-    filename: function (req, file, cb) {
+    filename(req, file, cb) {
       // The filename is set to a unique identifier followed by the original file name
-      cb(null, uuid() + '-' + file.originalname);
+      cb(null, `${uuid()}-${file.originalname}`);
     },
   }),
 });

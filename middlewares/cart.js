@@ -6,9 +6,7 @@ function initializeCart(req, res, next) {
   let cart; // Declare a variable to hold the cart
 
   // If there is no cart in the session, create a new empty Cart
-  if (!req.session.cart) {
-    cart = new Cart();
-  } else {
+  if (req.session.cart) {
     const sessionCart = req.session.cart;
     // If there is a cart in the session, create a new Cart with the existing items
     cart = new Cart(
@@ -16,6 +14,8 @@ function initializeCart(req, res, next) {
       sessionCart.totalQuantity,
       sessionCart.totalPrice,
     );
+  } else {
+    cart = new Cart();
   }
 
   // Attach the cart to the response object
